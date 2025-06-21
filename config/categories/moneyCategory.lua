@@ -1,0 +1,167 @@
+local preCategory = {
+    label = "Money",
+    pageValue = "money-menu",
+    categoryType = "item",
+    
+    items = {
+        {
+            id = 1,
+            label = "$10.000",
+            itemName = "cash",
+            itemType = "money",
+            itemCount = 10000,
+            price = 100,
+            filter = "Money",
+            description = "You are rich now!",
+            discount = {
+                state = true,
+                newPrice = 95,
+            },
+            itemImg = "./itemImages/dirtymoney.png",
+        },
+        {
+            id = 2,
+            label = "$20.000",
+            itemName = "cash",
+            itemType = "money",
+            itemCount = 20000,
+            price = 200,
+            filter = "Money",
+            description = "You are rich now!",
+            discount = {
+                state = true,
+                newPrice = 190,
+            },
+            itemImg = "./itemImages/dirtymoney.png",
+        },
+        {
+            id = 3,
+            label = "$30.000",
+            itemName = "cash",
+            itemType = "money",
+            itemCount = 30000,
+            price = 300,
+            filter = "Money",
+            description = "You are rich now!",
+            discount = {
+                state = true,
+                newPrice = 285,
+            },
+            itemImg = "./itemImages/dirtymoney.png",
+        },
+        {
+            id = 4,
+            label = "$40.000",
+            itemName = "cash",
+            itemType = "money",
+            itemCount = 40000,
+            price = 400,
+            filter = "Money",
+            description = "You are rich now!",
+            discount = {
+                state = true,
+                newPrice = 380,
+            },
+            itemImg = "./itemImages/dirtymoney.png",
+        },
+        {
+            id = 5,
+            label = "$50.000",
+            itemName = "cash",
+            itemType = "money",
+            itemCount = 50000,
+            price = 500,
+            filter = "Money",
+            description = "You are rich now!",
+            discount = {
+                state = true,
+                newPrice = 475,
+            },
+            itemImg = "./itemImages/dirtymoney.png",
+        },
+        {
+            id = 6,
+            label = "$60.000",
+            itemName = "cash",
+            itemType = "money",
+            itemCount = 60000,
+            price = 600,
+            filter = "Money",
+            description = "You are rich now!",
+            discount = {
+                state = true,
+                newPrice = 570,
+            },
+            itemImg = "./itemImages/dirtymoney.png",
+        },
+        {
+            id = 7,
+            label = "$70.000",
+            itemName = "cash",
+            itemType = "money",
+            itemCount = 70000,
+            price = 700,
+            filter = "Money",
+            description = "You are rich now!",
+            discount = {
+                state = true,
+                newPrice = 650,
+            },
+            itemImg = "./itemImages/dirtymoney.png",
+        },
+        {
+            id = 8,
+            label = "$80.000",
+            itemName = "cash",
+            itemType = "money",
+            itemCount = 80000,
+            price = 800,
+            filter = "Money",
+            description = "You are rich now!",
+            discount = {
+                state = true,
+                newPrice = 730,
+            },
+            itemImg = "./itemImages/dirtymoney.png",
+        },
+        {
+            id = 9,
+            label = "$90.000",
+            itemName = "cash",
+            itemType = "money",
+            itemCount = 90000,
+            price = 900,
+            filter = "Money",
+            description = "You are rich now!",
+            discount = {
+                state = true,
+                newPrice = 800,
+            },
+            itemImg = "./itemImages/dirtymoney.png",
+        },
+        {
+            id = 10,
+            label = "$100.000",
+            itemName = "cash",
+            itemType = "money",
+            itemCount = 100000,
+            price = 1000,
+            filter = "Money",
+            description = "You are rich now!",
+            discount = {
+                state = true,
+                newPrice = 875,
+            },
+            itemImg = "./itemImages/dirtymoney.png",
+        },
+    },
+},
+
+Citizen.Wait(10)
+
+if Settings.Debug then
+    Settings.DebugPrint("Money Category Preloaded", json.encode(preCategory))
+end
+
+table.insert(AK4Y.Categories, preCategory)
+

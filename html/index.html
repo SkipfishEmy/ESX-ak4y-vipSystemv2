@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>ak4y-vipSystemv2</title>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+			integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		/>
+		<link rel="stylesheet" href="main.css" />
+		<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+		<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<div class="backgroundApp" v-if="this.general.show"></div>
+			<div class="General" v-if="this.general.show">
+				<div class="exitBox" @click="exitClicked">
+					{{this.translate.exit}}
+					<div class="exitIcon"><i class="fa-solid fa-xmark"></i></div>
+				</div>
+				<header class="topSide">
+					<div
+						class="titleBox"
+						:class="{'selectCategory' : 'main-menu' == this.general.selectedCategory }"
+						@click="[ this.general.selectedCategory = 'main-menu'], [this.general.page = 'main-menu' ]"
+					>
+						<div class="titleIcon">
+							<svg width="2.0833vw" height="2.0833vw" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<g id="ep:menu">
+									<path
+										id="Vector"
+										d="M6.25 17.4999C5.91848 17.4999 5.60054 17.3682 5.36612 17.1338C5.1317 16.8994 5 16.5815 5 16.2499V6.25244C5 5.92092 5.1317 5.60298 5.36612 5.36856C5.60054 5.13414 5.91848 5.00244 6.25 5.00244H16.25C16.5815 5.00244 16.8995 5.13414 17.1339 5.36856C17.3683 5.60298 17.5 5.92092 17.5 6.25244V16.2499C17.5 16.5815 17.3683 16.8994 17.1339 17.1338C16.8995 17.3682 16.5815 17.4999 16.25 17.4999H6.25ZM23.75 17.4999C23.4185 17.4999 23.1005 17.3682 22.8661 17.1338C22.6317 16.8994 22.5 16.5815 22.5 16.2499V6.25244C22.5 5.92092 22.6317 5.60298 22.8661 5.36856C23.1005 5.13414 23.4185 5.00244 23.75 5.00244H33.7475C34.079 5.00244 34.397 5.13414 34.6314 5.36856C34.8658 5.60298 34.9975 5.92092 34.9975 6.25244V16.2499C34.9975 16.5815 34.8658 16.8994 34.6314 17.1338C34.397 17.3682 34.079 17.4999 33.7475 17.4999H23.75ZM6.25 34.9999C5.91848 34.9999 5.60054 34.8682 5.36612 34.6338C5.1317 34.3994 5 34.0815 5 33.7499V23.7499C5 23.4184 5.1317 23.1005 5.36612 22.8661C5.60054 22.6316 5.91848 22.4999 6.25 22.4999H16.25C16.5815 22.4999 16.8995 22.6316 17.1339 22.8661C17.3683 23.1005 17.5 23.4184 17.5 23.7499V33.7499C17.5 34.0815 17.3683 34.3994 17.1339 34.6338C16.8995 34.8682 16.5815 34.9999 16.25 34.9999H6.25ZM23.75 34.9999C23.4185 34.9999 23.1005 34.8682 22.8661 34.6338C22.6317 34.3994 22.5 34.0815 22.5 33.7499V23.7499C22.5 23.4184 22.6317 23.1005 22.8661 22.8661C23.1005 22.6316 23.4185 22.4999 23.75 22.4999H33.7475C34.079 22.4999 34.397 22.6316 34.6314 22.8661C34.8658 23.1005 34.9975 23.4184 34.9975 23.7499V33.7499C34.9975 34.0815 34.8658 34.3994 34.6314 34.6338C34.397 34.8682 34.079 34.9999 33.7475 34.9999H23.75Z"
+										fill="url(#paint0_linear_3615_71)"
+									/>
+								</g>
+								<defs>
+									<linearGradient id="paint0_linear_3615_71" x1="13.5" y1="5" x2="35" y2="39.5" gradientUnits="userSpaceOnUse">
+										<stop stop-color="#FFD580" />
+										<stop offset="1" stop-color="#FFE0A1" />
+									</linearGradient>
+								</defs>
+							</svg>
+						</div>
+						<div class="titleTextBox">
+							<h2 class="titleText">{{this.translate.main1}}</h2>
+							<div class="titleSubText">{{this.translate.main2}}</div>
+						</div>
+					</div>
+					<div class="categoryBox">
+						<div class="categoryList">
+							<template v-for="(category, index) in getCategories">
+								<div
+									class="category"
+									:class="{'selectCategory' : category.pageValue == this.general.page }"
+									@click="this.general.page = category.pageValue"
+								>
+									<h2 class="categoryText">{{category.label}}</h2>
+									<div class="categoryLine"></div>
+								</div>
+							</template>
+						</div>
+						<div class="topLine"></div>
+						<div class="profileBox">
+							<div class="profileTextBox">
+								<h2 class="profileName">{{getCharInfo.name}}</h2>
+								<div class="coinBox" @click="this.general.selectedCategory = 'buyCoin-menu'">
+									{{getCharInfo.coin}} V
+									<div class="coinIcon">
+										<img src="./img/coinImg.png" alt="" class="coinBoxImg" />
+									</div>
+								</div>
+							</div>
+							<div class="profileImg" :style="{ backgroundImage: 'url(' + getCharInfo.profileImg + ')' }"></div>
+						</div>
+					</div>
+				</header>
+				<div v-if="this.customizePopUp.show" class="customization-popUp">
+					<div class="popUpCustomizationBox">
+						<div class="customizationTitle" v-if="this.customizePopUp.menu == 'plate'">{{this.translate.plateChange}}</div>
+						<div class="customizationTitle" v-if="this.customizePopUp.menu == 'number'">{{this.translate.numberChange}}</div>
+						<div class="customizationMiddleSide">
+							<div v-if="this.customizePopUp.menu == 'plate'" class="plateCustomizeSide">
+								<div class="leftImageArea">
+									<div class="plateTextOnImage">{{this.customizePopUp.plateNumber}}</div>
+								</div>
+
+								<div class="plateCustomRightArea">
+									<div class="rightTitleCustomize">{{this.translate.enterPlate}}</div>
+									<div class="rightCustomizeDescription">{{this.translate.plateDescription}}</div>
+									<div class="rightCustomizeInput">
+										<input type="text" class="rightCustomizePlateInput" v-model="this.customizePopUp.plateNumber" />
+										<div class="rightCustomizeInputSvg">
+											<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+												<path
+													d="M9.401 16.1607L16.797 8.76472C15.5526 8.2452 14.4226 7.48614 13.471 6.53072C12.5151 5.57893 11.7557 4.44849 11.236 3.20372L3.84 10.5997C3.263 11.1767 2.974 11.4657 2.726 11.7837C2.4331 12.159 2.18196 12.5651 1.977 12.9947C1.804 13.3587 1.675 13.7467 1.417 14.5207L0.0549955 18.6037C-0.00769076 18.7907 -0.0169912 18.9914 0.0281393 19.1833C0.0732699 19.3753 0.171042 19.5508 0.310467 19.6903C0.449892 19.8297 0.625441 19.9274 0.817383 19.9726C1.00932 20.0177 1.21005 20.0084 1.397 19.9457L5.48 18.5837C6.255 18.3257 6.642 18.1967 7.006 18.0237C7.436 17.8187 7.842 17.5677 8.217 17.2747C8.535 17.0267 8.824 16.7377 9.401 16.1607ZM18.849 6.71272C19.5864 5.97529 20.0007 4.97511 20.0007 3.93222C20.0007 2.88933 19.5864 1.88916 18.849 1.15172C18.1116 0.414286 17.1114 7.77013e-09 16.0685 0C15.0256 -7.77013e-09 14.0254 0.414286 13.288 1.15172L12.401 2.03872L12.439 2.14972C12.8761 3.40044 13.5914 4.53562 14.531 5.46972C15.493 6.43742 16.668 7.16683 17.962 7.59972L18.849 6.71272Z"
+													fill="url(#paint0_linear_13_1984)"
+												/>
+												<defs>
+													<linearGradient
+														id="paint0_linear_13_1984"
+														x1="8.93837"
+														y1="-1.56256"
+														x2="24.5486"
+														y2="11.0085"
+														gradientUnits="userSpaceOnUse"
+													>
+														<stop stop-color="#FFEEC1" />
+														<stop offset="1" stop-color="#FEE275" />
+													</linearGradient>
+												</defs>
+											</svg>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div v-if="this.customizePopUp.menu == 'number'" class="numberCustomizeSide">
+								<div class="leftphoneImageArea">
+									<i class="fa-solid fa-phone"></i>
+								</div>
+
+								<div class="numberCustomRightArea">
+									<div class="rightTitleCustomize">{{this.translate.enterNumber}}</div>
+									<div class="rightCustomizeDescription">{{this.translate.numberDescription}}</div>
+									<div class="rightCustomizeInput">
+										<input type="text" class="rightCustomizePlateInput" v-model="this.customizePopUp.phoneNumber" />
+										<div class="rightCustomizeInputSvg">
+											<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+												<path
+													d="M9.401 16.1607L16.797 8.76472C15.5526 8.2452 14.4226 7.48614 13.471 6.53072C12.5151 5.57893 11.7557 4.44849 11.236 3.20372L3.84 10.5997C3.263 11.1767 2.974 11.4657 2.726 11.7837C2.4331 12.159 2.18196 12.5651 1.977 12.9947C1.804 13.3587 1.675 13.7467 1.417 14.5207L0.0549955 18.6037C-0.00769076 18.7907 -0.0169912 18.9914 0.0281393 19.1833C0.0732699 19.3753 0.171042 19.5508 0.310467 19.6903C0.449892 19.8297 0.625441 19.9274 0.817383 19.9726C1.00932 20.0177 1.21005 20.0084 1.397 19.9457L5.48 18.5837C6.255 18.3257 6.642 18.1967 7.006 18.0237C7.436 17.8187 7.842 17.5677 8.217 17.2747C8.535 17.0267 8.824 16.7377 9.401 16.1607ZM18.849 6.71272C19.5864 5.97529 20.0007 4.97511 20.0007 3.93222C20.0007 2.88933 19.5864 1.88916 18.849 1.15172C18.1116 0.414286 17.1114 7.77013e-09 16.0685 0C15.0256 -7.77013e-09 14.0254 0.414286 13.288 1.15172L12.401 2.03872L12.439 2.14972C12.8761 3.40044 13.5914 4.53562 14.531 5.46972C15.493 6.43742 16.668 7.16683 17.962 7.59972L18.849 6.71272Z"
+													fill="url(#paint0_linear_13_1984)"
+												/>
+												<defs>
+													<linearGradient
+														id="paint0_linear_13_1984"
+														x1="8.93837"
+														y1="-1.56256"
+														x2="24.5486"
+														y2="11.0085"
+														gradientUnits="userSpaceOnUse"
+													>
+														<stop stop-color="#FFEEC1" />
+														<stop offset="1" stop-color="#FEE275" />
+													</linearGradient>
+												</defs>
+											</svg>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="customizationButtonSide">
+							<div class="customizeButton" @click="this.customizePopUp.show = false">{{this.translate.cancelText}}</div>
+							<div class="customizeButton" id="customizeChangeButton" @click="buyItemClicked">
+								<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 30 30" fill="none">
+									<mask
+										id="mask0_13_958"
+										style="mask-type: luminance"
+										maskUnits="userSpaceOnUse"
+										x="2"
+										y="2"
+										width="25"
+										height="25"
+									>
+										<path
+											fill-rule="evenodd"
+											clip-rule="evenodd"
+											d="M3.65332 9.16235H25.5747L24.3569 25.6034H4.87118L3.65332 9.16235Z"
+											fill="white"
+											stroke="white"
+											stroke-width="2.43571"
+											stroke-linejoin="round"
+										/>
+										<path
+											d="M9.74268 11.5982V3.68213H19.4855V11.5982"
+											stroke="white"
+											stroke-width="2.43571"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										/>
+										<path d="M9.74268 20.7319H19.4855" stroke="black" stroke-width="2.43571" stroke-linecap="round" />
+									</mask>
+									<g mask="url(#mask0_13_958)">
+										<path d="M0 0.0285645H29.2286V29.2571H0V0.0285645Z" fill="black" />
+									</g>
+								</svg>
+								{{this.translate.changeText}}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="bundlePopupSide" v-if="this.bundlePopUp.show">
+					<div class="bundlePopupBox">
+						<div class="bundlePopupDiscountBox" v-if="getselectedItemDetail.discount.state">
+							<svg width="1.7708vw" height="1.7708vw" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<g id="mdi:discount">
+									<path
+										id="Vector"
+										d="M29.5494 13.3102V6.53861H22.7922L17.9902 1.77979L13.2602 6.53861H6.48856V13.3102L1.72974 18.0403L6.48856 22.8422V29.5995H13.2602L17.9902 34.3583L22.7922 29.5995H29.5494V22.8422L34.3083 18.0403L29.5494 13.3102ZM13.4327 10.9236C14.8417 10.9236 15.9775 12.0594 15.9775 13.4827C15.9775 14.1577 15.7093 14.8049 15.2321 15.2822C14.7549 15.7594 14.1076 16.0275 13.4327 16.0275C12.0094 16.0275 10.8736 14.8917 10.8736 13.4827C10.8736 12.0594 12.0094 10.9236 13.4327 10.9236ZM22.6197 25.2288C21.2107 25.2288 20.0749 24.0787 20.0749 22.6697C20.0749 21.9948 20.343 21.3475 20.8203 20.8703C21.2975 20.3931 21.9448 20.125 22.6197 20.125C24.0286 20.125 25.1788 21.2608 25.1788 22.6697C25.1788 23.3484 24.9092 23.9994 24.4292 24.4793C23.9493 24.9592 23.2984 25.2288 22.6197 25.2288ZM12.9583 25.272L10.8017 23.1154L23.0654 10.8517L25.2219 13.0083L12.9583 25.272Z"
+										fill="url(#paint0_linear_3658_1614)"
+									/>
+								</g>
+								<defs>
+									<linearGradient
+										id="paint0_linear_3658_1614"
+										x1="13.3646"
+										y1="-2.39421"
+										x2="27.1462"
+										y2="43.7437"
+										gradientUnits="userSpaceOnUse"
+									>
+										<stop stop-color="#FFE9BD" />
+										<stop offset="1" stop-color="#FFC552" />
+									</linearGradient>
+								</defs>
+							</svg>
+							<div class="bundlePopupDiscountTextBox">
+								<div class="bundlePopupDiscountText">{{getselectedItemDetail.discountPercentage}}%</div>
+								<p class="bundlePopupDiscountSubText">{{this.translate.discText}}</p>
+							</div>
+						</div>
+						<div class="bundlePopupTopSide">
+							<div class="bundlePopupTitleBox">
+								<div class="bundlePopupTitleIcon">
+									<i class="fa-solid fa-box"></i>
+								</div>
+								<div class="bundlePopupTitleTextBox">
+									<h2 class="bundlePopupTitleText">{{getselectedItemDetail.label}}</h2>
+									<p class="bundlePopupTitleSubText">{{this.translate.bundlesText}}</p>
+								</div>
+							</div>
+						</div>
+						<div class="bundlePopupItemList">
+							<div class="bundlePopupItemListBox">
+								{{this.translate.weaponText}}
+								<div class="bundlePopupItemLists">
+									<template v-for="(inItem, index) in getselectedItemDetail.giveItems" :key="index">
+										<div class="bundlePopupItemBox" v-if="inItem.itemType == 'weapon'">
+											<div class="bundlePopupItemNameBox">
+												<h2 class="bundlePopupItemNameText">{{inItem.label}}</h2>
+												<p class="bundlePopupItemNameSubText">{{inItem.itemType}}</p>
+											</div>
+											<img :src="inItem.itemImg" alt="" class="bundlePopupItemImg" />
+											<h2 class="bundlePopupItemCount">x{{inItem.itemCount}}</h2>
+										</div>
+									</template>
+								</div>
+							</div>
+							<div class="bundlePopupItemListBox">
+								{{this.translate.itemsText}}
+								<div class="bundlePopupItemLists">
+									<template v-for="(inItem, index) in getselectedItemDetail.giveItems" :key="index">
+										<div class="bundlePopupItemBox" v-if="inItem.itemType == 'item'">
+											<div class="bundlePopupItemNameBox">
+												<h2 class="bundlePopupItemNameText">{{inItem.label}}</h2>
+												<p class="bundlePopupItemNameSubText">{{inItem.itemType}}</p>
+											</div>
+											<img :src="inItem.itemImg" alt="" class="bundlePopupItemImg" />
+											<h2 class="bundlePopupItemCount">x{{inItem.itemCount}}</h2>
+										</div>
+									</template>
+								</div>
+							</div>
+							<div class="bundlePopupItemListBox">
+								{{this.translate.vehiclesText}}
+								<div class="bundlePopupItemLists">
+									<template v-for="(inItem, index) in getselectedItemDetail.giveItems" :key="index">
+										<div class="bundlePopupItemBox" v-if="inItem.itemType == 'vehicle'">
+											<div class="bundlePopupItemNameBox">
+												<h2 class="bundlePopupItemNameText">{{inItem.label}}</h2>
+												<p class="bundlePopupItemNameSubText">{{inItem.itemType}}</p>
+											</div>
+											<img :src="inItem.itemImg" alt="" class="bundlePopupItemImg" />
+											<h2 class="bundlePopupItemCount">x{{inItem.itemCount}}</h2>
+										</div>
+									</template>
+								</div>
+							</div>
+							<div class="bundlePopupItemListBox">
+								{{this.translate.moneysText}}
+								<div class="bundlePopupItemLists">
+									<template v-for="(inItem, index) in getselectedItemDetail.giveItems" :key="index">
+										<div class="bundlePopupItemBox" v-if="inItem.itemType == 'money'">
+											<div class="bundlePopupItemNameBox">
+												<h2 class="bundlePopupItemNameText">{{inItem.label}}</h2>
+												<p class="bundlePopupItemNameSubText">{{inItem.itemType}}</p>
+											</div>
+											<img :src="inItem.itemImg" alt="" class="bundlePopupItemImg" />
+											<h2 class="bundlePopupItemCount">x{{inItem.itemCount}}</h2>
+										</div>
+									</template>
+								</div>
+							</div>
+						</div>
+						<div class="bundlePopupButtonList">
+							<div class="bundlePopupBuyButton" @click="buyItemClicked">
+								<img src="./img/coinImg.png" alt="" class="bundlePopupBuyIcon" />
+								<h2 class="bundlePopupBuyText">
+									{{this.translate.buyPackText}} ({{this.general.selectedItemDetail.discount.state ?
+									this.general.selectedItemDetail.discount.newPrice : this.general.selectedItemDetail.price}}V)
+								</h2>
+							</div>
+							<div class="bundlePopupBuysButton" @click="this.bundlePopUp.show = false">
+								<!-- <i class="fa-solid fa-bag-shopping"></i> -->
+								{{this.translate.cancelText}}
+							</div>
+						</div>
+						<img src="./img/bundleSide/popupbg.png" alt="" class="bundlePopupBG" />
+					</div>
+				</div>
+				<div class="popupSide" v-if="this.buyPopUp.show">
+					<div class="popupBox">
+						<div class="popupTopSide">{{this.translate.donateBuyMenu}}</div>
+						<div class="popupTextBoxs">
+							<div class="popupTextBox">
+								<h2 class="popupText">{{this.translate.wantToBuy}}</h2>
+								<p class="popupSubText">{{this.translate.buyDescription}}</p>
+							</div>
+							<div class="popupItemList">
+								<div class="popupItemLine"></div>
+								<div class="popupItemBox">
+									<div class="popupItem">
+										<h2 class="popupItemName">{{this.general.selectedItemDetail.label}}</h2>
+										<p class="popupItemCount">x{{this.general.basketItemQuantity}}</p>
+									</div>
+									<div class="popupItem" v-if="this.general.customPlate.plateState">
+										<h2 class="popupItemName">{{this.translate.customPlateText}} ({{this.general.customPlate.plateNumber}})</h2>
+										<p class="popupItemCount">x1</p>
+									</div>
+								</div>
+								<div class="popupItemLine"></div>
+							</div>
+						</div>
+						<div class="popupButtonList">
+							<div class="popupCancelButton" @click="this.buyPopUp.show = false">{{this.translate.cancelText}}</div>
+							<div class="popupBuyButton" @click="buyItemClicked">
+								<i class="fa-solid fa-bag-shopping"></i>{{this.translate.buyPackText}}
+								({{this.general.selectedItemDetail.discount.state ? this.general.selectedItemDetail.discount.newPrice *
+								this.general.basketItemQuantity : this.general.selectedItemDetail.price * this.general.basketItemQuantity}} V-Coin)
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="boughtSide" v-if="this.boughtPopUp.show">
+					<div class="boughtTextBox">
+						<h2 class="boughtHelloText">{{this.translate.helloText}}, {{getCharInfo.name}}</h2>
+						<div class="boughtCongText">
+							<h2 class="boughtCong">{{this.translate.congratulationsText}}</h2>
+						</div>
+						<p class="boughtDescriptionText">{{this.translate.congratulationsDescription}}</p>
+					</div>
+					<div class="boughtItemBox boughtPlateVehicle">
+						<div class="boughtItemTopSide">
+							<div class="boughtItemNameBox">
+								<h2 class="boughtItemName">{{getselectedItemDetail.label}}</h2>
+								<p class="boughtItemSubName">{{getselectedItemDetail.itemType}}</p>
+							</div>
+							<div class="plate" v-if="this.general.customPlate.plateState">
+								<h2 class="plateText">{{this.general.customPlate.plateNumber}}</h2>
+								<h2 class="plateTextShadow">{{this.general.customPlate.plateNumber}}</h2>
+							</div>
+						</div>
+						<div class="boughtItemBottomSide">
+							<img v-if="getselectedItemDetail.itemType == 'bundle'" src="./img/bundle.png" alt="" class="boughtItemImg" />
+							<img v-else :src="getselectedItemDetail.itemImg" alt="" class="boughtItemImg" />
+							<div class="boughtItemPriceBox">
+								<img src="./img/coinImg.png" alt="" class="boughtItemPriceIcon" />
+								<h2 class="boughtItemPrice" v-if="!this.general.customPlate.plateState">
+									{{getselectedItemDetail.discount.state ? getselectedItemDetail.discount.newPrice * this.general.basketItemQuantity
+									: getselectedItemDetail.price * this.general.basketItemQuantity}} V-Coin
+								</h2>
+								<h2 class="boughtItemPrice" v-if="this.general.customPlate.plateState">
+									{{getselectedItemDetail.discount.state ? getselectedItemDetail.discount.newPrice +
+									this.general.customPlate.platePrice : getselectedItemDetail.price + this.general.customPlate.platePrice }} V-Coin
+								</h2>
+							</div>
+						</div>
+					</div>
+					<div class="boughtInfoBox">
+						<h2 class="boughtInfoText">{{this.translate.informationText}}</h2>
+						<p class="boughtInfoSubText">{{this.translate.boughtInformationDescription}}</p>
+					</div>
+					<div class="boughtCollectButton" @click="this.boughtPopUp.show = false">{{this.translate.collectText}}</div>
+					<img src="./img/boughtSide/boughtbg.png" alt="" class="boughtBg" />
+				</div>
+				<section class="bundleSide" v-if="this.general.selectedCategory == 'bundle'">
+					<div class="itemListTopSide">
+						<div class="itemListTitleBox">
+							<div class="itemListTitleIcon">
+								<i class="fa-solid fa-box"></i>
+							</div>
+							<div class="itemListTitleTextBox">
+								<h2 class="itemListTitleText">{{this.translate.bundleListText}}</h2>
+								<p class="itemListTitleSubText">{{this.translate.packListText}}</p>
+							</div>
+						</div>
+						<div class="search-input">
+							<input type="text" id="modernInput" placeholder="bundle name..." v-model="this.general.searchInput" />
+							<div class="searchButton">
+								<i class="fa-solid fa-magnifying-glass"></i>
+							</div>
+						</div>
+					</div>
+					<div class="bundleList">
+						<bundleItemTemplate v-for="(item, index) in getShowedItems" :key="index">
+							<div class="bundleBox">
+								<div v-if="item.discount.state" class="bundleDiscountBox">
+									<svg width="2.1354vw" height="2.1875vw" viewBox="0 0 41 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<g id="mdi:discount">
+											<path
+												id="Vector"
+												d="M34.2797 15.2349V7.24221H26.304L20.6361 1.62524L15.0531 7.24221H7.06033V15.2349L1.44336 20.818L7.06033 26.4859V34.4616H15.0531L20.6361 40.0786L26.304 34.4616H34.2797V26.4859L39.8967 20.818L34.2797 15.2349ZM15.2567 12.418C16.9197 12.418 18.2603 13.7586 18.2603 15.4386C18.2603 16.2352 17.9439 16.9992 17.3806 17.5625C16.8173 18.1258 16.0533 18.4422 15.2567 18.4422C13.5767 18.4422 12.2361 17.1016 12.2361 15.4386C12.2361 13.7586 13.5767 12.418 15.2567 12.418ZM26.1003 29.3028C24.4373 29.3028 23.0967 27.9452 23.0967 26.2822C23.0967 25.4856 23.4131 24.7216 23.9764 24.1583C24.5397 23.595 25.3037 23.2786 26.1003 23.2786C27.7634 23.2786 29.1209 24.6192 29.1209 26.2822C29.1209 27.0833 28.8027 27.8516 28.2362 28.4181C27.6697 28.9846 26.9014 29.3028 26.1003 29.3028ZM14.6967 29.3537L12.1512 26.8083L26.6264 12.3331L29.1718 14.8786L14.6967 29.3537Z"
+												fill="url(#paint0_linear_3654_4)"
+											/>
+										</g>
+										<defs>
+											<linearGradient
+												id="paint0_linear_3654_4"
+												x1="15.1764"
+												y1="-3.30144"
+												x2="31.4432"
+												y2="51.1564"
+												gradientUnits="userSpaceOnUse"
+											>
+												<stop stop-color="#FFE9BD" />
+												<stop offset="1" stop-color="#FFC552" />
+											</linearGradient>
+										</defs>
+									</svg>
+									<div class="bundleDiscountTextBox">
+										<div class="bundleDiscountText">{{item.discountPercentage}}%</div>
+										<p class="bundleDiscountSubText">{{this.translate.discText}}</p>
+									</div>
+								</div>
+								<div class="bundleTitle">
+									<h2 class="bundleTitleText">{{item.label}}</h2>
+								</div>
+								<p class="bundleDescription">{{item.description}}</p>
+								<div class="bundleItemListBox">
+									{{this.translate.contentsText}}
+									<div class="bundleItemList">
+										<div class="bundleItem" v-for="(inItem) in item.giveItems" :key="inItem">
+											<div class="bundleTextBox">
+												<h2 class="bundleItemText">{{inItem.label}}</h2>
+												<p class="bundleItemSubText">{{inItem.itemType}}</p>
+											</div>
+											<img :src="inItem.itemImg" alt="" class="bundleItemImg" />
+										</div>
+									</div>
+								</div>
+								<div class="bundleButtonBox">
+									<div class="bundleBuyButton" @click="[this.bundlePopUp.show = true] , [this.general.selectedItemDetail = item]">
+										<img src="./img/coinImg.png" alt="" class="bundleBuyIcon" />
+										<h2 class="bundleBuyText">{{ item.discount.state ? item.discount.newPrice : item.price}} V</h2>
+									</div>
+									<div class="bundlePreviewButton" id="oldPrice" v-if="item.discount.state">
+										<p class="dealsButtonSubText">{{item.price + ' V'}}</p>
+									</div>
+									<div class="bundlePreviewButton" v-if="!item.discount.state">
+										<i class="fa-solid fa-file"></i>{{this.translate.packPreviewText}}
+									</div>
+								</div>
+								<img src="./img/bundleSide/bundleBg.png" alt="" class="bundleBg" />
+							</div>
+						</bundleItemTemplate>
+					</div>
+				</section>
+				<section class="vehicleSide" v-if="this.general.selectedCategory == 'vehicle'">
+					<div class="filterSide">
+						<div class="filterBox">
+							<div class="filterTitle">{{this.translate.filterText}}</div>
+							<div class="filterList">
+								<div class="checkbox-wrapper-65" v-for="(item, index) in this.general.allFilters" :key="index">
+									<label :for="'cbk1-65-' + index">
+										<input type="checkbox" :id="'cbk1-65-' + index " v-model="item.state" />
+										<span class="cbx">
+											<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path
+													d="M10.4363 0.9487C10.2546 0.847566 10.0547 0.783252 9.84804 0.759434C9.64142 0.735616 9.43213 0.752762 9.23214 0.809892C9.03215 0.867022 8.84538 0.963015 8.68252 1.09238C8.51965 1.22175 8.38389 1.38195 8.28298 1.56382L5.34352 6.85374L3.66123 5.17145C3.51517 5.02023 3.34046 4.8996 3.14729 4.81662C2.95412 4.73364 2.74635 4.68996 2.53612 4.68814C2.32588 4.68631 2.11739 4.72637 1.92281 4.80598C1.72822 4.88559 1.55144 5.00316 1.40277 5.15182C1.25411 5.30049 1.13654 5.47727 1.05693 5.67186C0.97732 5.86644 0.937259 6.07493 0.939086 6.28517C0.940913 6.4954 0.984591 6.70317 1.06757 6.89634C1.15055 7.08951 1.27117 7.26423 1.4224 7.41028L4.58907 10.577C4.88832 10.877 5.29207 11.0417 5.70848 11.0417L5.92777 11.0258C6.17046 10.9919 6.40195 10.9021 6.60403 10.7634C6.80611 10.6248 6.97326 10.4412 7.09232 10.227L11.0506 3.10203C11.1517 2.92031 11.216 2.72045 11.2398 2.51389C11.2636 2.30732 11.2465 2.09808 11.1895 1.89813C11.1324 1.69817 11.0366 1.51141 10.9073 1.3485C10.7781 1.1856 10.618 1.04975 10.4363 0.9487Z"
+													fill="url(#paint0_linear_3497_1721)"
+												/>
+												<defs>
+													<linearGradient
+														id="paint0_linear_3497_1721"
+														x1="4.00006"
+														y1="-0.5"
+														x2="6.09463"
+														y2="11.0417"
+														gradientUnits="userSpaceOnUse"
+													>
+														<stop stop-color="#FFD569" />
+														<stop offset="1" stop-color="#FFBB0C" />
+													</linearGradient>
+												</defs>
+											</svg>
+										</span>
+										<span>{{item.label}}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="previewBox" v-if="getselectedItemDetail">
+							<div class="previewNameBox">
+								<h2 class="previewName">{{getselectedItemDetail.label}}</h2>
+								<div class="previewSubName">{{getselectedItemDetail.filter}}</div>
+							</div>
+							<div class="previewImgBox">
+								<img :src="getselectedItemDetail.itemImg" alt="" class="previewImg" />
+							</div>
+							<div class="previewRangeList" v-if="getselectedItemDetail.graph">
+								<div class="previewRangeBox" v-for="(item) in getselectedItemDetail.graph" :key="item">
+									<div class="previewRangeTitle"><i id="graphIcon" :class="item.fa"></i>{{item.label}}</div>
+									<div class="previewRange">
+										<div class="previewRangeSay" :style="{width: item.stat + '%'}"></div>
+									</div>
+									<h2 class="previewRangeText">{{item.stat}}</h2>
+								</div>
+							</div>
+							<div class="plateBox" v-if="this.general.plateCustomizationBuying">
+								<div class="plate">
+									<h2 class="plateText">
+										{{ this.general.customPlate.plateState ? this.general.customPlate.plateNumber : "RANDOM" }}
+									</h2>
+									<h2 class="plateTextShadow">
+										{{ this.general.customPlate.plateState ? this.general.customPlate.plateNumber : "RANDOM" }}
+									</h2>
+								</div>
+								<div class="customPlateBox">
+									<div class="checkbox-wrapper-65">
+										<label for="cbk1-2">
+											<input type="checkbox" id="cbk1-2" v-model="this.general.customPlate.plateState" />
+											<span class="cbx" style="width: 1.0938vw; height: 1.0938vw">
+												<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path
+														d="M10.4363 0.9487C10.2546 0.847566 10.0547 0.783252 9.84804 0.759434C9.64142 0.735616 9.43213 0.752762 9.23214 0.809892C9.03215 0.867022 8.84538 0.963015 8.68252 1.09238C8.51965 1.22175 8.38389 1.38195 8.28298 1.56382L5.34352 6.85374L3.66123 5.17145C3.51517 5.02023 3.34046 4.8996 3.14729 4.81662C2.95412 4.73364 2.74635 4.68996 2.53612 4.68814C2.32588 4.68631 2.11739 4.72637 1.92281 4.80598C1.72822 4.88559 1.55144 5.00316 1.40277 5.15182C1.25411 5.30049 1.13654 5.47727 1.05693 5.67186C0.97732 5.86644 0.937259 6.07493 0.939086 6.28517C0.940913 6.4954 0.984591 6.70317 1.06757 6.89634C1.15055 7.08951 1.27117 7.26423 1.4224 7.41028L4.58907 10.577C4.88832 10.877 5.29207 11.0417 5.70848 11.0417L5.92777 11.0258C6.17046 10.9919 6.40195 10.9021 6.60403 10.7634C6.80611 10.6248 6.97326 10.4412 7.09232 10.227L11.0506 3.10203C11.1517 2.92031 11.216 2.72045 11.2398 2.51389C11.2636 2.30732 11.2465 2.09808 11.1895 1.89813C11.1324 1.69817 11.0366 1.51141 10.9073 1.3485C10.7781 1.1856 10.618 1.04975 10.4363 0.9487Z"
+														fill="url(#paint0_linear_3497_1721)"
+													/>
+													<defs>
+														<linearGradient
+															id="paint0_linear_3497_1721"
+															x1="4.00006"
+															y1="-0.5"
+															x2="6.09463"
+															y2="11.0417"
+															gradientUnits="userSpaceOnUse"
+														>
+															<stop stop-color="#FFD569" />
+															<stop offset="1" stop-color="#FFBB0C" />
+														</linearGradient>
+													</defs>
+												</svg>
+											</span>
+											<span style="font-size: 0.8333vw; width: fit-content; display: flex; gap: 0.2vw"
+												>{{this.translate.customPlateText}}
+												<p style="color: #ffee56">({{this.general.customPlate.platePrice}} Coin)</p></span
+											>
+										</label>
+									</div>
+									<div class="input-container">
+										<input type="text" id="modernInput" placeholder="Plate..." v-model="this.general.customPlate.plateNumber" />
+										<!-- <div class="inputCheck">
+											<i class="fa-solid fa-check"></i>
+										</div> -->
+									</div>
+								</div>
+							</div>
+							<div class="previewButtonList">
+								<div class="previewBuyButton" v-if="!this.general.customPlate.plateState" @click="this.buyPopUp.show = true">
+									<img src="./img/coinImg.png" alt="" class="previewCoin" />{{this.general.selectedItemDetail.discount.state ?
+									this.general.selectedItemDetail.discount.newPrice : this.general.selectedItemDetail.price }} V-Coin
+								</div>
+								<div class="previewBuyButton" v-if="this.general.customPlate.plateState" @click="this.buyPopUp.show = true">
+									<img src="./img/coinImg.png" alt="" class="previewCoin" />{{this.general.selectedItemDetail.discount.state ?
+									this.general.selectedItemDetail.discount.newPrice + this.general.customPlate.platePrice :
+									this.general.selectedItemDetail.price + this.general.customPlate.platePrice }} V-Coin
+								</div>
+								<div class="previewTestButton" v-if="getselectedItemDetail.testable" @click="testDriveClicked">
+									<i class="fa-solid fa-gear"></i>{{this.translate.testText}}
+								</div>
+							</div>
+						</div>
+						<div class="filetBGEffect"></div>
+						<img src="./img/filterSide/filterBGCharacter.png" alt="" class="filterCharacter" />
+					</div>
+					<div class="itemListBox">
+						<div class="itemListTopSide">
+							<div class="itemListTitleBox">
+								<div class="itemListTitleIcon">
+									<i class="fa-solid fa-car-side"></i>
+								</div>
+								<div class="itemListTitleTextBox">
+									<h2 class="itemListTitleText">{{this.translate.vehicleListText}}</h2>
+									<p class="itemListTitleSubText">{{this.translate.vehiclesText}}</p>
+								</div>
+							</div>
+							<div class="search-input">
+								<input type="text" id="modernInput" placeholder="search..." v-model="this.general.searchInput" />
+								<div class="searchButton">
+									<i class="fa-solid fa-magnifying-glass"></i>
+								</div>
+							</div>
+						</div>
+						<div class="itemList">
+							<itemTemplate v-for="(item) in getShowedItems" :key="index">
+								<div class="itemBox" @click="this.general.selectedItemDetail = item">
+									<div v-if="item.discount.state" class="itemDiscountBox">
+										<svg width="1.4583vw" height="1.4583vw" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<g id="mdi:discount" clip-path="url(#clip0_3604_605)">
+												<path
+													id="Vector"
+													d="M23.3799 10.1616V4.6666H17.8966L13.9999 0.804932L10.1616 4.6666H4.6666V10.1616L0.804932 13.9999L4.6666 17.8966V23.3799H10.1616L13.9999 27.2416L17.8966 23.3799H23.3799V17.8966L27.2416 13.9999L23.3799 10.1616ZM10.3016 8.22493C11.4449 8.22493 12.3666 9.1466 12.3666 10.3016C12.3666 10.8493 12.149 11.3745 11.7618 11.7618C11.3745 12.149 10.8493 12.3666 10.3016 12.3666C9.1466 12.3666 8.22493 11.4449 8.22493 10.3016C8.22493 9.1466 9.1466 8.22493 10.3016 8.22493ZM17.7566 19.8333C16.6133 19.8333 15.6916 18.8999 15.6916 17.7566C15.6916 17.2089 15.9092 16.6837 16.2964 16.2964C16.6837 15.9092 17.2089 15.6916 17.7566 15.6916C18.8999 15.6916 19.8333 16.6133 19.8333 17.7566C19.8333 18.3074 19.6145 18.8356 19.225 19.225C18.8356 19.6145 18.3074 19.8333 17.7566 19.8333ZM9.9166 19.8683L8.1666 18.1183L18.1183 8.1666L19.8683 9.9166L9.9166 19.8683Z"
+													fill="url(#paint0_linear_3604_605)"
+												/>
+											</g>
+											<defs>
+												<linearGradient
+													id="paint0_linear_3604_605"
+													x1="10.2464"
+													y1="-2.58217"
+													x2="21.4298"
+													y2="34.8576"
+													gradientUnits="userSpaceOnUse"
+												>
+													<stop stop-color="#FFE9BD" />
+													<stop offset="1" stop-color="#FFC552" />
+												</linearGradient>
+												<clipPath id="clip0_3604_605">
+													<rect width="28" height="28" fill="white" />
+												</clipPath>
+											</defs>
+										</svg>
+										<div class="itemDiscountTextBox">
+											<h2 class="itemDiscountText">{{item.discountPercentage}}%</h2>
+											<p class="itemDiscountSubText">{{this.translate.discText}}</p>
+										</div>
+									</div>
+									<div class="itemName">{{item.label}}</div>
+									<img :src="item.itemImg" alt="" class="itemImg" />
+									<div class="itemBuyButton">
+										<img src="./img/coinImg.png" alt="" class="itemBuyIcon" />
+										<h2 class="itemBuyButtonText">{{ item.discount.state ? item.discount.newPrice : item.price}} V</h2>
+										<p class="dealsButtonSubTextCategory" v-if="item.discount.state">{{item.price + ' V'}}</p>
+									</div>
+									<img src="./img/filterSide/itembgEffect.png" alt="" class="itemBgEffect" />
+								</div>
+							</itemTemplate>
+						</div>
+					</div>
+				</section>
+				<section class="itemCategorySide" v-if="this.general.selectedCategory == 'item'">
+					<div class="filterSide">
+						<div class="filterBox">
+							<div class="filterTitle">{{this.translate.filterText}}</div>
+							<div class="filterList">
+								<div class="checkbox-wrapper-65" v-for="(item, index) in this.general.allFilters" :key="index">
+									<label :for="'cbk1-65-' + index ">
+										<!-- {{item}} -->
+										<input type="checkbox" :id="'cbk1-65-' + index " v-model="item.state" />
+										<span class="cbx">
+											<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path
+													d="M10.4363 0.9487C10.2546 0.847566 10.0547 0.783252 9.84804 0.759434C9.64142 0.735616 9.43213 0.752762 9.23214 0.809892C9.03215 0.867022 8.84538 0.963015 8.68252 1.09238C8.51965 1.22175 8.38389 1.38195 8.28298 1.56382L5.34352 6.85374L3.66123 5.17145C3.51517 5.02023 3.34046 4.8996 3.14729 4.81662C2.95412 4.73364 2.74635 4.68996 2.53612 4.68814C2.32588 4.68631 2.11739 4.72637 1.92281 4.80598C1.72822 4.88559 1.55144 5.00316 1.40277 5.15182C1.25411 5.30049 1.13654 5.47727 1.05693 5.67186C0.97732 5.86644 0.937259 6.07493 0.939086 6.28517C0.940913 6.4954 0.984591 6.70317 1.06757 6.89634C1.15055 7.08951 1.27117 7.26423 1.4224 7.41028L4.58907 10.577C4.88832 10.877 5.29207 11.0417 5.70848 11.0417L5.92777 11.0258C6.17046 10.9919 6.40195 10.9021 6.60403 10.7634C6.80611 10.6248 6.97326 10.4412 7.09232 10.227L11.0506 3.10203C11.1517 2.92031 11.216 2.72045 11.2398 2.51389C11.2636 2.30732 11.2465 2.09808 11.1895 1.89813C11.1324 1.69817 11.0366 1.51141 10.9073 1.3485C10.7781 1.1856 10.618 1.04975 10.4363 0.9487Z"
+													fill="url(#paint0_linear_3497_1721)"
+												/>
+												<defs>
+													<linearGradient
+														id="paint0_linear_3497_1721"
+														x1="4.00006"
+														y1="-0.5"
+														x2="6.09463"
+														y2="11.0417"
+														gradientUnits="userSpaceOnUse"
+													>
+														<stop stop-color="#FFD569" />
+														<stop offset="1" stop-color="#FFBB0C" />
+													</linearGradient>
+												</defs>
+											</svg>
+										</span>
+										<span>{{item.label}}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="previewBox">
+							<div class="previewNameBox">
+								<h2 class="previewName">{{getselectedItemDetail.label}}</h2>
+								<div class="previewSubName">{{getselectedItemDetail.filter}}</div>
+							</div>
+							<div class="previewImgBox">
+								<img :src="getselectedItemDetail.itemImg" alt="" class="previewImg" />
+							</div>
+							<div class="previewDescription">
+								<h2 class="previewDescriptionText">Item description;</h2>
+								<p class="previewDescriptionSubText">{{getselectedItemDetail.description}}</p>
+							</div>
+							<div class="previewCountBox" v-if="this.general.page != 'job-menu'">
+								{{this.translate.itemQuantityText}}
+								<div class="previewCount">
+									<div class="previewCountIcon" @click="this.general.basketItemQuantity--">
+										<i class="fa-solid fa-minus"></i>
+									</div>
+									<h2 class="previewCountText">{{this.general.basketItemQuantity}}</h2>
+									<div class="previewCountIcon" @click="this.general.basketItemQuantity++">
+										<i class="fa-solid fa-plus"></i>
+									</div>
+								</div>
+							</div>
+							<div class="previewButtonList" @click="this.buyPopUp.show = true">
+								<div class="previewBuyButton">
+									<img src="./img/coinImg.png" alt="" class="previewCoin" />{{this.general.selectedItemDetail.discount.state ?
+									this.general.selectedItemDetail.discount.newPrice * this.general.basketItemQuantity :
+									this.general.selectedItemDetail.price * this.general.basketItemQuantity}} V-Coin
+								</div>
+							</div>
+						</div>
+						<div class="filetBGEffect"></div>
+						<img src="./img/filterSide/filterBGCharacter.png" alt="" class="filterCharacter" />
+					</div>
+					<div class="itemListBox">
+						<div class="itemListTopSide">
+							<div class="itemListTitleBox">
+								<div class="itemListTitleIcon">
+									<i class="fa-solid fa-car-side"></i>
+								</div>
+								<div class="itemListTitleTextBox">
+									<h2 class="itemListTitleText">{{this.translate.itemListText}}</h2>
+									<p class="itemListTitleSubText">{{this.translate.itemsText}}</p>
+								</div>
+							</div>
+							<div class="search-input">
+								<input type="text" id="modernInput" placeholder="search..." v-model="this.general.searchInput" />
+								<div class="searchButton">
+									<i class="fa-solid fa-magnifying-glass"></i>
+								</div>
+							</div>
+						</div>
+						<div class="itemList">
+							<itemTemplate v-for="(item) in getShowedItems" :key="index">
+								<div class="itemBox" @click="this.general.selectedItemDetail = item">
+									<div v-if="item.discount.state" class="itemDiscountBox">
+										<svg width="1.4583vw" height="1.4583vw" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<g id="mdi:discount" clip-path="url(#clip0_3604_605)">
+												<path
+													id="Vector"
+													d="M23.3799 10.1616V4.6666H17.8966L13.9999 0.804932L10.1616 4.6666H4.6666V10.1616L0.804932 13.9999L4.6666 17.8966V23.3799H10.1616L13.9999 27.2416L17.8966 23.3799H23.3799V17.8966L27.2416 13.9999L23.3799 10.1616ZM10.3016 8.22493C11.4449 8.22493 12.3666 9.1466 12.3666 10.3016C12.3666 10.8493 12.149 11.3745 11.7618 11.7618C11.3745 12.149 10.8493 12.3666 10.3016 12.3666C9.1466 12.3666 8.22493 11.4449 8.22493 10.3016C8.22493 9.1466 9.1466 8.22493 10.3016 8.22493ZM17.7566 19.8333C16.6133 19.8333 15.6916 18.8999 15.6916 17.7566C15.6916 17.2089 15.9092 16.6837 16.2964 16.2964C16.6837 15.9092 17.2089 15.6916 17.7566 15.6916C18.8999 15.6916 19.8333 16.6133 19.8333 17.7566C19.8333 18.3074 19.6145 18.8356 19.225 19.225C18.8356 19.6145 18.3074 19.8333 17.7566 19.8333ZM9.9166 19.8683L8.1666 18.1183L18.1183 8.1666L19.8683 9.9166L9.9166 19.8683Z"
+													fill="url(#paint0_linear_3604_605)"
+												/>
+											</g>
+											<defs>
+												<linearGradient
+													id="paint0_linear_3604_605"
+													x1="10.2464"
+													y1="-2.58217"
+													x2="21.4298"
+													y2="34.8576"
+													gradientUnits="userSpaceOnUse"
+												>
+													<stop stop-color="#FFE9BD" />
+													<stop offset="1" stop-color="#FFC552" />
+												</linearGradient>
+												<clipPath id="clip0_3604_605">
+													<rect width="28" height="28" fill="white" />
+												</clipPath>
+											</defs>
+										</svg>
+										<div class="itemDiscountTextBox">
+											<h2 class="itemDiscountText">{{item.discountPercentage}}%</h2>
+											<p class="itemDiscountSubText">{{this.translate.discText}}</p>
+										</div>
+									</div>
+									<div class="itemName">{{item.label}}</div>
+									<img :src="item.itemImg" alt="" class="itemImg" />
+									<div class="itemBuyButton">
+										<img src="./img/coinImg.png" alt="" class="itemBuyIcon" />
+										<h2 class="itemBuyButtonText">{{ item.discount.state ? item.discount.newPrice : item.price}} V</h2>
+										<p class="dealsButtonSubTextCategory" v-if="item.discount.state">{{item.price + ' V'}}</p>
+									</div>
+									<img src="./img/filterSide/itembgEffect.png" alt="" class="itemBgEffect" />
+								</div>
+							</itemTemplate>
+						</div>
+					</div>
+				</section>
+				<section class="houseCategorySide" v-if="this.general.selectedCategory == 'house'">
+					<div class="filterSide">
+						<div class="filterBox">
+							<div class="filterTitle">{{this.translate.filterText}}</div>
+							<div class="filterList">
+								<div class="checkbox-wrapper-65" v-for="(item, index) in this.general.allFilters" :key="index">
+									<label :for="'cbk1-65-' + index ">
+										<!-- {{item}} -->
+										<input type="checkbox" :id="'cbk1-65-' + index " v-model="item.state" />
+										<span class="cbx">
+											<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path
+													d="M10.4363 0.9487C10.2546 0.847566 10.0547 0.783252 9.84804 0.759434C9.64142 0.735616 9.43213 0.752762 9.23214 0.809892C9.03215 0.867022 8.84538 0.963015 8.68252 1.09238C8.51965 1.22175 8.38389 1.38195 8.28298 1.56382L5.34352 6.85374L3.66123 5.17145C3.51517 5.02023 3.34046 4.8996 3.14729 4.81662C2.95412 4.73364 2.74635 4.68996 2.53612 4.68814C2.32588 4.68631 2.11739 4.72637 1.92281 4.80598C1.72822 4.88559 1.55144 5.00316 1.40277 5.15182C1.25411 5.30049 1.13654 5.47727 1.05693 5.67186C0.97732 5.86644 0.937259 6.07493 0.939086 6.28517C0.940913 6.4954 0.984591 6.70317 1.06757 6.89634C1.15055 7.08951 1.27117 7.26423 1.4224 7.41028L4.58907 10.577C4.88832 10.877 5.29207 11.0417 5.70848 11.0417L5.92777 11.0258C6.17046 10.9919 6.40195 10.9021 6.60403 10.7634C6.80611 10.6248 6.97326 10.4412 7.09232 10.227L11.0506 3.10203C11.1517 2.92031 11.216 2.72045 11.2398 2.51389C11.2636 2.30732 11.2465 2.09808 11.1895 1.89813C11.1324 1.69817 11.0366 1.51141 10.9073 1.3485C10.7781 1.1856 10.618 1.04975 10.4363 0.9487Z"
+													fill="url(#paint0_linear_3497_1721)"
+												/>
+												<defs>
+													<linearGradient
+														id="paint0_linear_3497_1721"
+														x1="4.00006"
+														y1="-0.5"
+														x2="6.09463"
+														y2="11.0417"
+														gradientUnits="userSpaceOnUse"
+													>
+														<stop stop-color="#FFD569" />
+														<stop offset="1" stop-color="#FFBB0C" />
+													</linearGradient>
+												</defs>
+											</svg>
+										</span>
+										<span>{{item.label}}</span>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="previewBox">
+							<div class="previewNameBox">
+								<h2 class="previewName">{{getselectedItemDetail.label}}</h2>
+								<div class="previewSubName">{{getselectedItemDetail.filter}}</div>
+							</div>
+							<div class="previewImgBox">
+								<img :src="getselectedItemDetail.itemImg" alt="" class="previewImg house" />
+							</div>
+
+							<div class="houseInfoSection">
+								<div class="houseStreet">
+									<div class="houseIconSide">
+										<svg xmlns="http://www.w3.org/2000/svg" width="1.2vw" height="1.2vw" viewBox="0 0 13 19" fill="none">
+											<path
+												fill-rule="evenodd"
+												clip-rule="evenodd"
+												d="M6.5 8.75828C5.47393 8.75828 4.64286 7.90803 4.64286 6.85828C4.64286 5.80853 5.47393 4.95828 6.5 4.95828C7.52607 4.95828 8.35714 5.80853 8.35714 6.85828C8.35714 7.90803 7.52607 8.75828 6.5 8.75828ZM6.5 0C2.91014 0 0 2.9773 0 6.65C0 10.3227 2.91014 19 6.5 19C10.0899 19 13 10.3227 13 6.65C13 2.9773 10.0899 0 6.5 0Z"
+												fill="url(#paint0_linear_13_3411)"
+											/>
+											<defs>
+												<linearGradient
+													id="paint0_linear_13_3411"
+													x1="6.5"
+													y1="0"
+													x2="6.5"
+													y2="19"
+													gradientUnits="userSpaceOnUse"
+												>
+													<stop stop-color="#FFEBB7" />
+													<stop offset="1" stop-color="#FFEBB7" stop-opacity="0.51" />
+												</linearGradient>
+											</defs>
+										</svg>
+									</div>
+									<div class="houseStreetTextArea">{{this.general.selectedItemDetail.locationText}}</div>
+								</div>
+								<div class="houseMetre">
+									<div class="houseIconSide">
+										<svg xmlns="http://www.w3.org/2000/svg" width="1.2vw" height="1.2vw" viewBox="0 0 22 22" fill="none">
+											<path
+												d="M0 3.75C0 2.75544 0.395088 1.80161 1.09835 1.09835C1.80161 0.395088 2.75544 0 3.75 0H18.25C19.2446 0 20.1984 0.395088 20.9017 1.09835C21.6049 1.80161 22 2.75544 22 3.75V14.4327C22 14.746 21.746 15 21.4327 15C21.2603 15 21.0973 14.9217 20.9897 14.7871L19.0317 12.3396C18.5998 11.7997 18.9841 11 19.6755 11C20.1309 11 20.5 10.6309 20.5 10.1755V3.75C20.5 3.15326 20.2629 2.58097 19.841 2.15901C19.419 1.73705 18.8467 1.5 18.25 1.5H3.75C3.15326 1.5 2.58097 1.73705 2.15901 2.15901C1.73705 2.58097 1.5 3.15326 1.5 3.75V10.1755C1.5 10.6309 1.86914 11 2.32451 11C3.01586 11 3.40023 11.7997 2.96834 12.3396L1.01034 14.7871C0.902674 14.9217 0.739673 15 0.567328 15C0.254001 15 0 14.746 0 14.4327V3.75ZM16.7635 19.9794C16.2237 18.2539 17.5127 16.5 19.3207 16.5H20.25C21.2165 16.5 22 17.2835 22 18.25C22 19.2446 21.6049 20.1984 20.9017 20.9017C20.1984 21.6049 19.2446 22 18.25 22C17.732 22 17.276 21.6583 17.1306 21.1612L17.091 21.026L16.7635 19.9794ZM17.3777 12.6727C18.1279 13.6107 17.4601 15 16.259 15C15.6325 15 15.0787 14.5929 14.8917 13.995L14.4149 12.4704C14.1868 11.7412 14.7316 11 15.4956 11C15.8397 11 16.1651 11.1564 16.38 11.4251L17.3777 12.6727ZM9.57761 12.7247C9.22469 13.8531 10.0677 15 11.25 15C12.4323 15 13.2753 13.8531 12.9224 12.7247L12.7212 12.0813C12.52 11.438 11.9241 11 11.25 11C10.5759 11 9.98002 11.438 9.77881 12.0813L9.57761 12.7247ZM14.9549 19.2231C14.4481 17.6029 12.9474 16.5 11.2498 16.5C9.55242 16.5 8.05184 17.6027 7.54478 19.2225L6.84 21.474C6.7582 21.7348 6.95297 22 7.22627 22H15.2576C15.5352 22 15.735 21.7334 15.657 21.467L14.9549 19.2231ZM6.63493 11C7.5823 11 8.25785 11.9189 7.97527 12.8231L7.64818 13.8698C7.43806 14.5422 6.81537 15 6.11094 15C4.76049 15 4.0097 13.4379 4.85332 12.3834L5.53838 11.527C5.80487 11.1939 6.20833 11 6.63493 11ZM5.65099 20.2543C6.23324 18.3924 4.84226 16.5 2.89139 16.5H1.75C0.783502 16.5 0 17.2835 0 18.25C0 19.2446 0.395088 20.1984 1.09835 20.9017C1.80161 21.6049 2.75544 22 3.75 22H4.08081C4.68921 22 5.22728 21.6053 5.41 21.025L5.65099 20.2543Z"
+												fill="url(#paint0_linear_13_3424)"
+											/>
+											<defs>
+												<linearGradient
+													id="paint0_linear_13_3424"
+													x1="11"
+													y1="0"
+													x2="11"
+													y2="22"
+													gradientUnits="userSpaceOnUse"
+												>
+													<stop stop-color="#FFEBB7" />
+													<stop offset="1" stop-color="#FFEBB7" stop-opacity="0.51" />
+												</linearGradient>
+											</defs>
+										</svg>
+									</div>
+									<div class="houseStreetTextArea">{{this.general.selectedItemDetail.houseInfoText}}</div>
+								</div>
+							</div>
+
+							<div class="previewDescription">
+								<!-- <h2 class="previewDescriptionText">Item description;</h2> -->
+								<p class="previewDescriptionSubText house">{{getselectedItemDetail.description}}</p>
+							</div>
+
+							<div class="previewButtonList">
+								<div class="previewBuyButton" @click="this.buyPopUp.show = true">
+									<img src="./img/coinImg.png" alt="" class="previewCoin" />{{this.general.selectedItemDetail.discount.state ?
+									this.general.selectedItemDetail.discount.newPrice * this.general.basketItemQuantity :
+									this.general.selectedItemDetail.price * this.general.basketItemQuantity}} V-Coin
+								</div>
+								<div class="locateButton" @click="locateClicked">Locate</div>
+							</div>
+						</div>
+						<div class="filetBGEffect"></div>
+						<img src="./img/filterSide/filterBGCharacter.png" alt="" class="filterCharacter" />
+					</div>
+					<div class="itemListBox">
+						<div class="itemListTopSide">
+							<div class="itemListTitleBox">
+								<div class="itemListTitleIcon">
+									<i class="fa-solid fa-car-side"></i>
+								</div>
+								<div class="itemListTitleTextBox">
+									<h2 class="itemListTitleText">{{this.translate.houseListText}}</h2>
+									<p class="itemListTitleSubText">{{this.translate.itemsText}}</p>
+								</div>
+							</div>
+							<div class="search-input">
+								<input type="text" id="modernInput" placeholder="search..." v-model="this.general.searchInput" />
+								<div class="searchButton">
+									<i class="fa-solid fa-magnifying-glass"></i>
+								</div>
+							</div>
+						</div>
+						<div class="itemList">
+							<itemTemplate v-for="(item) in getShowedItems" :key="index">
+								<div class="itemBox" @click="this.general.selectedItemDetail = item">
+									<div v-if="item.discount.state" class="itemDiscountBox">
+										<svg width="1.4583vw" height="1.4583vw" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<g id="mdi:discount" clip-path="url(#clip0_3604_605)">
+												<path
+													id="Vector"
+													d="M23.3799 10.1616V4.6666H17.8966L13.9999 0.804932L10.1616 4.6666H4.6666V10.1616L0.804932 13.9999L4.6666 17.8966V23.3799H10.1616L13.9999 27.2416L17.8966 23.3799H23.3799V17.8966L27.2416 13.9999L23.3799 10.1616ZM10.3016 8.22493C11.4449 8.22493 12.3666 9.1466 12.3666 10.3016C12.3666 10.8493 12.149 11.3745 11.7618 11.7618C11.3745 12.149 10.8493 12.3666 10.3016 12.3666C9.1466 12.3666 8.22493 11.4449 8.22493 10.3016C8.22493 9.1466 9.1466 8.22493 10.3016 8.22493ZM17.7566 19.8333C16.6133 19.8333 15.6916 18.8999 15.6916 17.7566C15.6916 17.2089 15.9092 16.6837 16.2964 16.2964C16.6837 15.9092 17.2089 15.6916 17.7566 15.6916C18.8999 15.6916 19.8333 16.6133 19.8333 17.7566C19.8333 18.3074 19.6145 18.8356 19.225 19.225C18.8356 19.6145 18.3074 19.8333 17.7566 19.8333ZM9.9166 19.8683L8.1666 18.1183L18.1183 8.1666L19.8683 9.9166L9.9166 19.8683Z"
+													fill="url(#paint0_linear_3604_605)"
+												/>
+											</g>
+											<defs>
+												<linearGradient
+													id="paint0_linear_3604_605"
+													x1="10.2464"
+													y1="-2.58217"
+													x2="21.4298"
+													y2="34.8576"
+													gradientUnits="userSpaceOnUse"
+												>
+													<stop stop-color="#FFE9BD" />
+													<stop offset="1" stop-color="#FFC552" />
+												</linearGradient>
+												<clipPath id="clip0_3604_605">
+													<rect width="28" height="28" fill="white" />
+												</clipPath>
+											</defs>
+										</svg>
+										<div class="itemDiscountTextBox">
+											<h2 class="itemDiscountText">{{item.discountPercentage}}%</h2>
+											<p class="itemDiscountSubText">{{this.translate.discText}}</p>
+										</div>
+									</div>
+									<div class="itemName house">{{item.label}}</div>
+									<img :src="item.itemImg" alt="" class="itemImg house" />
+									<div class="itemBuyButton house">
+										<img src="./img/coinImg.png" alt="" class="itemBuyIcon" />
+										<h2 class="itemBuyButtonText house">{{ item.discount.state ? item.discount.newPrice : item.price}} V</h2>
+										<p class="dealsButtonSubTextCategory" v-if="item.discount.state">{{item.price + ' V'}}</p>
+									</div>
+									<img src="./img/filterSide/itembgEffect.png" alt="" class="itemBgEffect" />
+								</div>
+							</itemTemplate>
+						</div>
+					</div>
+				</section>
+				<section class="customizeCategorySide" v-if="this.general.selectedCategory == 'customize'">
+					<div class="itemListBox">
+						<div class="itemListTopSide">
+							<div class="itemListTitleBox">
+								<div class="itemListTitleIcon">
+									<i class="fa-solid fa-car-side"></i>
+								</div>
+								<div class="itemListTitleTextBox">
+									<h2 class="itemListTitleText">{{this.translate.customizationListText}}</h2>
+									<p class="itemListTitleSubText">{{this.translate.itemsText}}</p>
+								</div>
+							</div>
+							<div class="search-input">
+								<input type="text" id="modernInput" placeholder="search..." v-model="this.general.searchInput" />
+								<div class="searchButton">
+									<i class="fa-solid fa-magnifying-glass"></i>
+								</div>
+							</div>
+						</div>
+						<div class="itemList">
+							<itemTemplate v-for="(item) in getShowedItems" :key="index">
+								<div
+									class="itemBox"
+									@click="[this.customizePopUp.show = true] , [this.customizePopUp.menu = item.itemType] , [this.general.selectedItemDetail = item]"
+								>
+									<div v-if="item.discount.state" class="itemDiscountBox">
+										<svg width="1.4583vw" height="1.4583vw" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+											<g id="mdi:discount" clip-path="url(#clip0_3604_605)">
+												<path
+													id="Vector"
+													d="M23.3799 10.1616V4.6666H17.8966L13.9999 0.804932L10.1616 4.6666H4.6666V10.1616L0.804932 13.9999L4.6666 17.8966V23.3799H10.1616L13.9999 27.2416L17.8966 23.3799H23.3799V17.8966L27.2416 13.9999L23.3799 10.1616ZM10.3016 8.22493C11.4449 8.22493 12.3666 9.1466 12.3666 10.3016C12.3666 10.8493 12.149 11.3745 11.7618 11.7618C11.3745 12.149 10.8493 12.3666 10.3016 12.3666C9.1466 12.3666 8.22493 11.4449 8.22493 10.3016C8.22493 9.1466 9.1466 8.22493 10.3016 8.22493ZM17.7566 19.8333C16.6133 19.8333 15.6916 18.8999 15.6916 17.7566C15.6916 17.2089 15.9092 16.6837 16.2964 16.2964C16.6837 15.9092 17.2089 15.6916 17.7566 15.6916C18.8999 15.6916 19.8333 16.6133 19.8333 17.7566C19.8333 18.3074 19.6145 18.8356 19.225 19.225C18.8356 19.6145 18.3074 19.8333 17.7566 19.8333ZM9.9166 19.8683L8.1666 18.1183L18.1183 8.1666L19.8683 9.9166L9.9166 19.8683Z"
+													fill="url(#paint0_linear_3604_605)"
+												/>
+											</g>
+											<defs>
+												<linearGradient
+													id="paint0_linear_3604_605"
+													x1="10.2464"
+													y1="-2.58217"
+													x2="21.4298"
+													y2="34.8576"
+													gradientUnits="userSpaceOnUse"
+												>
+													<stop stop-color="#FFE9BD" />
+													<stop offset="1" stop-color="#FFC552" />
+												</linearGradient>
+												<clipPath id="clip0_3604_605">
+													<rect width="28" height="28" fill="white" />
+												</clipPath>
+											</defs>
+										</svg>
+										<div class="itemDiscountTextBox">
+											<h2 class="itemDiscountText">{{item.discountPercentage}}%</h2>
+											<p class="itemDiscountSubText">{{this.translate.discText}}</p>
+										</div>
+									</div>
+									<div class="itemName">{{item.label}}</div>
+									<img :src="item.itemImg" alt="" class="itemImg" />
+									<div class="itemBuyButton">
+										<img src="./img/coinImg.png" alt="" class="itemBuyIcon" />
+										<h2 class="itemBuyButtonText">{{ item.discount.state ? item.discount.newPrice : item.price}} V</h2>
+										<p class="dealsButtonSubTextCategory" v-if="item.discount.state">{{item.price + ' V'}}</p>
+									</div>
+									<img src="./img/filterSide/itembgEffect.png" alt="" class="itemBgEffect" />
+								</div>
+							</itemTemplate>
+						</div>
+					</div>
+				</section>
+				<section class="homeSide" v-if="this.general.selectedCategory == 'main-menu'">
+					<div class="specialBox" v-if="getSpecialOffer">
+						<div class="specialTopSide">
+							<div class="specialTitleBox">
+								<div class="specialTitle">
+									<h2 class="specialTitleText">{{getSpecialOffer.label}}</h2>
+								</div>
+								<div class="specialSubText">
+									<h2 class="specialSub" v-if="getSpecialOffer.discount.state">UP TO {{getSpecialOffer.discountPercentage}}%</h2>
+								</div>
+							</div>
+							<h2 class="specialDescription">
+								{{this.translate.informationText}}
+								<p>{{getSpecialOffer.description}}</p>
+							</h2>
+						</div>
+						<div class="specialItemList">
+							<div class="specialItem" v-for="(item, index) in getSpecialOffer.giveItems" :key="index">
+								<div class="specialItemNameBox">
+									<h2 class="specialItemName">{{item.label}}</h2>
+									<p>{{item.itemType}}</p>
+								</div>
+								<img :src="item.itemImg" alt="" class="specialItemImg" />
+								<div class="specialItemButton">{{item.itemType}}</div>
+							</div>
+						</div>
+						<div class="specialPriceBox">
+							<div class="specialPrice">
+								<img src="./img/coinImg.png" alt="" class="specialPriceImg" />
+								<h2 class="specialPriceText">
+									{{getSpecialOffer.discount.state ? getSpecialOffer.discount.newPrice : getSpecialOffer.price}}V
+								</h2>
+							</div>
+							<h2 class="specialOldPrice">{{getSpecialOffer.discount.state ? getSpecialOffer.price : ''}}V</h2>
+						</div>
+						<div class="bottomSide">
+							<div
+								class="specialButton"
+								@click="[this.bundlePopUp.show = true] , [this.general.selectedItemDetail = this.specialOffer]"
+							>
+								{{this.translate.openMenuText}}
+							</div>
+						</div>
+						<img src="./img/specialOffer/specialOfferCharacter.png" alt="" class="specialCharacter" />
+					</div>
+					<div class="homeRightSide">
+						<div class="needCoinBox">
+							<div class="needCoinTitleBox">
+								<div class="needCoinTitle">
+									<h2 class="needCoinTitleText">
+										{{this.translate.doYouNeedText}}
+										<p>V-Coin?</p>
+									</h2>
+								</div>
+								<div class="needCoinSubText">
+									<h2 class="needCoinSub">{{this.translate.buyCoinText}}</h2>
+								</div>
+							</div>
+							<div class="needCoinList">
+								<div class="needCoin" v-for="(item, index) in getBuyCoinSection" :key="index">
+									<img src="./img/coinImg.png" alt="" class="needCoinImg" />
+									<h2 class="needCoinText">{{item.coin}}</h2>
+								</div>
+							</div>
+							<div class="needCoinButton" @click="this.general.selectedCategory = 'buyCoin-menu'">{{this.translate.openMenuText}}</div>
+							<img src="./img/coinNeed/coinNeedBottomEffect.png" alt="" class="needCoinBottomEffect" />
+							<img src="./img/coinNeed/coinNeedTopEffect.png" alt="" class="needCoinTopEffect" />
+							<img src="./img/coinNeed/coinNeedCharacter.png" alt="" class="needCoinCharacter" />
+						</div>
+						<div class="dealsBox">
+							<div class="dealsTitleBox">
+								<div class="dealsTitle">
+									<div class="dealsTitleIcon">
+										<i class="fa-solid fa-star"></i>
+									</div>
+									<div class="dealsTextBox">
+										<h2 class="dealsText">{{this.translate.dealsText}}</h2>
+										<p class="dealsSubText">{{this.translate.productsText}}</p>
+									</div>
+								</div>
+								<!-- <div class="dealsTimeBox">
+									<i class="fa-solid fa-clock"></i>
+									<h2 class="dealsTime">23:12:11</h2>
+								</div> -->
+							</div>
+							<div class="dealsListBox">
+								<div class="dealBox" v-for="(item, index) in getHotDeals" :key="index">
+									<div class="hotDealTitle">
+										<i class="fa-solid fa-fire-flame-curved"></i>
+										<h2 class="hotDealText">{{this.translate.hotDealsText}}</h2>
+									</div>
+									<div class="dealsNameBox">
+										<h2 class="dealsName">{{item.label}}</h2>
+										<div class="dealsSubName">{{item.filter}}</div>
+									</div>
+									<div class="dealsDiscountBox" v-if="item.discount.state">
+										<i class="fa-solid fa-tags"></i>
+										<h2 class="dealsDiscountText">{{item.discount.state ? item.discountPercentage + '%' : ''}}</h2>
+									</div>
+									<div class="dealsButton" @click="[this.buyPopUp.show = true] , [this.general.selectedItemDetail = item]">
+										<img src="./img/coinImg.png" alt="" class="itemBuyIcon" />
+										<h2 class="dealsButtonText">{{item.discount.state ? item.discount.newPrice : item.price}}V</h2>
+										<p class="dealsButtonSubText">{{item.discount.state ? item.price + 'V' : ''}}</p>
+									</div>
+									<div class="dealCarImg">
+										<img :src="item.itemImg" alt="" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section class="coinSide" v-if="this.general.selectedCategory == 'buyCoin-menu'">
+					<div class="reedemSide">
+						<div class="reedemTitleBox">
+							<div class="reedemTitle">
+								<h2 class="reedemTitleText">{{this.translate.coinRedeemCodeText}}</h2>
+							</div>
+							<div class="reedemSubText">
+								<h2 class="reedemSub">{{this.translate.enterCodeText}}</h2>
+							</div>
+						</div>
+						<div class="reedemRightBox">
+							<div class="reedemInputSide">
+								<div class="reedemInputTopSide">
+									<div class="reedemInputTextBox">
+										<h2 class="reedemInputText">{{this.translate.redeemCodeEnterText}}</h2>
+										<p class="reedemInputSubText">{{this.translate.enterCodeText}}</p>
+									</div>
+									<div class="reedemInputIconBox">
+										<i class="fa-solid fa-coins"></i>
+									</div>
+								</div>
+								<div class="reedemInputBox">
+									<div class="reedem-input">
+										<input type="text" id="reedemInput" placeholder="enter code..." v-model="this.general.redeemInput" />
+									</div>
+									<div class="reedemInputButton" @click="clickedRedeemButton">{{this.translate.enterText}}</div>
+								</div>
+							</div>
+							<div class="reedemInfoBox">
+								{{this.translate.informationText}}
+								<p>{{this.translate.redeemInformationText}}</p>
+							</div>
+						</div>
+						<img src="./img/coinSide/coinchracter.png" alt="" class="reedemChracterImg" />
+					</div>
+					<div class="coinList">
+						<div class="coinItemBox" v-for="(item, index) in getBuyCoinSection" :key="index">
+							<div class="coinItemTitleBox">
+								<div class="coinItemTitle">
+									<h2 class="coinItemTitleText">
+										{{item.coin}}
+										<p>V-COIN</p>
+									</h2>
+								</div>
+								<div class="coinItemSubText">
+									<h2 class="coinItemSub">{{this.translate.buyCoinText}}</h2>
+								</div>
+							</div>
+							<div class="bundleDiscountBox" style="right: 2.0313vw" v-if="item.discount.state">
+								<svg width="2.1354vw" height="2.1875vw" viewBox="0 0 41 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<g id="mdi:discount">
+										<path
+											id="Vector"
+											d="M34.2797 15.2349V7.24221H26.304L20.6361 1.62524L15.0531 7.24221H7.06033V15.2349L1.44336 20.818L7.06033 26.4859V34.4616H15.0531L20.6361 40.0786L26.304 34.4616H34.2797V26.4859L39.8967 20.818L34.2797 15.2349ZM15.2567 12.418C16.9197 12.418 18.2603 13.7586 18.2603 15.4386C18.2603 16.2352 17.9439 16.9992 17.3806 17.5625C16.8173 18.1258 16.0533 18.4422 15.2567 18.4422C13.5767 18.4422 12.2361 17.1016 12.2361 15.4386C12.2361 13.7586 13.5767 12.418 15.2567 12.418ZM26.1003 29.3028C24.4373 29.3028 23.0967 27.9452 23.0967 26.2822C23.0967 25.4856 23.4131 24.7216 23.9764 24.1583C24.5397 23.595 25.3037 23.2786 26.1003 23.2786C27.7634 23.2786 29.1209 24.6192 29.1209 26.2822C29.1209 27.0833 28.8027 27.8516 28.2362 28.4181C27.6697 28.9846 26.9014 29.3028 26.1003 29.3028ZM14.6967 29.3537L12.1512 26.8083L26.6264 12.3331L29.1718 14.8786L14.6967 29.3537Z"
+											fill="url(#paint0_linear_3654_4)"
+										/>
+									</g>
+									<defs>
+										<linearGradient
+											id="paint0_linear_3654_4"
+											x1="15.1764"
+											y1="-3.30144"
+											x2="31.4432"
+											y2="51.1564"
+											gradientUnits="userSpaceOnUse"
+										>
+											<stop stop-color="#FFE9BD" />
+											<stop offset="1" stop-color="#FFC552" />
+										</linearGradient>
+									</defs>
+								</svg>
+								<div class="bundleDiscountTextBox">
+									<div class="bundleDiscountText">{{item.discountPercentage}}%</div>
+									<p class="bundleDiscountSubText">{{this.translate.discText}}</p>
+								</div>
+							</div>
+							<div class="coinItemButton" @click="openLink(item.tebexPage)">
+								{{item.discount.state ? item.discount.newPrice : item.price}}€ buy
+							</div>
+							<img :src="item.itemImg" alt="" class="coinItemBg coin1" />
+						</div>
+					</div>
+				</section>
+				<img src="./img/donate_character.png" alt="" class="character" />
+				<div class="notifySectionXX" v-if="this.notifyArea.show">
+					<div class="notifyArea">{{this.notifyArea.message}}</div>
+				</div>
+			</div>
+		</div>
+		<script src="app.js"></script>
+	</body>
+</html>
