@@ -32,47 +32,51 @@ ESX.RegisterServerCallback('ak4y-vipSystemv2:buyItem:server', function(source, c
     if itemCategory == nil then return end
     local correctionMoney = moneyCorrectionForItem(itemData, itemCategory)
     if correctionMoney then 
-        local identifier  = xPlayer.getIdentifier()
-        local totalAmountOfItem = correctionMoney * itemData.quantity
+        local identifier = xPlayer.getIdentifier()
+        local totalAmountOfItem = correctionMoney * (itemData.quantity or 1)
 
         if itemData.itemType == Settings.SqlVehicleType or
-        itemData.itemType == Settings.SqlAirType or
-        itemData.itemType == Settings.SqlBoatType then
+           itemData.itemType == Settings.SqlAirType or
+           itemData.itemType == Settings.SqlBoatType then
             if itemData.customPlate ~= nil and itemData.customPlate.plateState then
                 totalAmountOfItem = totalAmountOfItem + itemData.customPlate.platePrice
                 itemData.carData.plate = itemData.customPlate.plateNumber:upper()
             end
         end
-        local result = ExecuteSql("SELECT * FROM ak4y_vipsystemv2 WHERE identifier  = '"..identifier .."'")
+
+        local result = ExecuteSql("SELECT * FROM ak4y_vipsystemv2 WHERE identifier = '"..identifier.."'")
         if result[1] then 
             if result[1].coinAmount >= totalAmountOfItem then
                 local newCoinAmount = result[1].coinAmount - totalAmountOfItem
                 if itemData.itemName == nil then itemData.itemName = "null" end
+
                 if itemData.itemType == "item" then 
-                    addItemToPlayer(xPlayer, itemData.itemName, itemData.quantity * itemData.itemCount)
+                    local count = (itemData.quantity or 1) * (itemData.itemCount or 1)
+                    addItemToPlayer(xPlayer, itemData.itemName, count)
                 elseif itemData.itemType == "money" then 
-                    giveServerMoney(xPlayer, itemData.quantity * itemData.itemCount)
+                    giveServerMoney(xPlayer, (itemData.quantity or 1) * (itemData.itemCount or 1))
                 elseif itemData.itemType == "job" then 
                     setJobToPlayer(xPlayer, itemData.itemName, itemData.jobGrade)
                 elseif itemData.itemType == "weapon" then 
-                    addWeaponToPlayer(xPlayer, itemData.itemName, itemData.quantity * itemData.itemCount)
+                    local count = (itemData.quantity or 1) * (itemData.itemCount or 1)
+                    addWeaponToPlayer(xPlayer, itemData.itemName, count)
                 elseif itemData.itemType == Settings.SqlVehicleType or
-                itemData.itemType == Settings.SqlAirType or
-                itemData.itemType == Settings.SqlBoatType then
+                       itemData.itemType == Settings.SqlAirType or
+                       itemData.itemType == Settings.SqlBoatType then
                     addVehicleToGarage(xPlayer, itemData)
                 elseif itemData.itemType == "bundle" then
-                    for k,v in pairs(itemData.giveItems) do 
+                    for k, v in pairs(itemData.giveItems) do 
                         if v.itemType == "item" then 
-                            addItemToPlayer(xPlayer, v.itemName, v.itemCount)
+                            addItemToPlayer(xPlayer, v.itemName, v.itemCount or 1)
                         elseif v.itemType == "money" then 
-                            giveServerMoney(xPlayer, v.itemCount)
+                            giveServerMoney(xPlayer, v.itemCount or 1)
                         elseif v.itemType == "job" then 
                             setJobToPlayer(xPlayer, v.itemName, v.jobGrade)
                         elseif v.itemType == "weapon" then 
-                            addWeaponToPlayer(xPlayer, v.itemName, v.itemCount)
+                            addWeaponToPlayer(xPlayer, v.itemName, v.itemCount or 1)
                         elseif v.itemType == Settings.SqlVehicleType or
-                        v.itemType == Settings.SqlAirType or
-                        v.itemType == Settings.SqlBoatType then
+                               v.itemType == Settings.SqlAirType or
+                               v.itemType == Settings.SqlBoatType then
                             addVehicleToGarage(xPlayer, v)
                         end
                     end
@@ -82,10 +86,10 @@ ESX.RegisterServerCallback('ak4y-vipSystemv2:buyItem:server', function(source, c
                     if not checkedNumber then 
                         DropPlayer(source, "[ak4y-vipSystemv2] ".. AK4Y.Translate.phoneNumberChanged)
                         Wait(5000)
-                        givePhoneNumber(identifier , newNumber)
+                        givePhoneNumber(identifier, newNumber)
                     end
                 elseif itemData.itemType == "plate" then 
-                    local oldPlateCheck = plateOwnerCheck(identifier , itemData.oldPlate)
+                    local oldPlateCheck = plateOwnerCheck(identifier, itemData.oldPlate)
                     if oldPlateCheck then 
                         updatePlate(itemData.oldPlate, itemData.customizePopUp.plateNumber, oldPlateCheck)
                     else
@@ -95,8 +99,8 @@ ESX.RegisterServerCallback('ak4y-vipSystemv2:buyItem:server', function(source, c
                 elseif itemData.itemType == "house" then 
                     TriggerClientEvent('ak4y-vipSystemv2:houseBought', source, itemData)
                 end
-                ExecuteSql("UPDATE ak4y_vipsystemv2 SET coinAmount = coinAmount - '"..totalAmountOfItem.."' WHERE identifier  = '"..identifier .."'")
-                sendNotifyToDc(source, identifier , itemData.itemName, itemData.quantity, totalAmountOfItem, newCoinAmount)
+                ExecuteSql("UPDATE ak4y_vipsystemv2 SET coinAmount = coinAmount - '"..totalAmountOfItem.."' WHERE identifier = '"..identifier.."'")
+                sendNotifyToDc(source, identifier, itemData.itemName, itemData.quantity, totalAmountOfItem, newCoinAmount)
                 cb(true)
             else
                 cb(AK4Y.Translate.youDontHaveEnoughCoinText)
@@ -107,8 +111,8 @@ ESX.RegisterServerCallback('ak4y-vipSystemv2:buyItem:server', function(source, c
     else
         cb(AK4Y.Translate.priceHasChangedText)
     end
-    cb(false)
 end)
+
 
 
 getCorrectCategoryForItem = function(page)
